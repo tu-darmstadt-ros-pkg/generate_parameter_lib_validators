@@ -20,6 +20,7 @@ target_include_directories(
 
 ament_target_dependencies(${PROJECT_NAME} INTERFACE rclcpp tl_expected)
 
+# --- Installation ---
 install(DIRECTORY include/ DESTINATION include)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets)
@@ -35,8 +36,5 @@ if(BUILD_TESTING)
   ament_target_dependencies(test_valid_topic_name rclcpp tl_expected)
 endif()
 
-# Install the extras file from the SOURCE tree
-install(FILES cmake/${PROJECT_NAME}-extras.cmake
-        DESTINATION share/${PROJECT_NAME}/cmake)
-
+# ament_package handles this automatically when passed as CONFIG_EXTRAS
 ament_package(CONFIG_EXTRAS "cmake/${PROJECT_NAME}-extras.cmake")
