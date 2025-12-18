@@ -1,7 +1,7 @@
+
 # generate_parameter_lib_validators
 
-git
-The package provides reusable validation hooks that can be referenced directly from parameter YAML files and are applied automatically by the generated `ParamListener`.
+This package provides reusable validation hooks that can be referenced directly from parameter YAML files and are applied automatically by the generated `ParamListener`.
 
 ---
 
@@ -18,24 +18,22 @@ The package provides reusable validation hooks that can be referenced directly f
 
 ### CMake Integration
 
-Expose the validator header to the parameter code generator:
+The package provides a CMake helper function `generate_parameter_library_with_validators` which wraps the standard generator to automatically include the validator headers and link the necessary dependencies.
 
 ```cmake
 find_package(generate_parameter_library REQUIRED)
 find_package(generate_parameter_lib_validators REQUIRED)
 
-set(GPLV_TARGET generate_parameter_lib_validators::generate_parameter_lib_validators)
-
-get_target_property(GPLV_INCLUDE_DIRS ${GPLV_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
-list(GET GPLV_INCLUDE_DIRS 0 GPLV_INCLUDE_DIR)
-
-generate_parameter_library(
+# Generate the library using the helper function
+generate_parameter_library_with_validators(
   my_parameters
   config/my_parameters.yaml
-  "${GPLV_INCLUDE_DIR}/generate_parameter_lib_validators/parameter_validators.hpp"
 )
 
-target_link_libraries(my_parameters INTERFACE ${GPLV_TARGET})
+# Link your main target against the generated parameter library
+# (The validators are linked automatically to 'my_parameters')
+target_link_libraries(my_node my_parameters)
+
 ```
 
 ### YAML usage
@@ -51,6 +49,7 @@ my_node:
     type: string_array
     validation:
       "generate_parameter_lib_validators::valid_topic_name": []
+
 ```
 
 The same validator works for both `string` and `string_array`.
@@ -76,7 +75,6 @@ Validates ROS 2 topic names according to DDS-compatible rules.
 * No empty segments, no trailing `/`
 * Absolute topics allowed: `/foo/bar`
 * Private topics allowed:
-
     * `~`
     * `~/foo/bar`
 * `~` may only appear as the first character
