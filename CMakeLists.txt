@@ -30,12 +30,13 @@ ament_export_dependencies(rclcpp tl_expected)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-
   ament_add_gtest(test_valid_topic_name test/test_valid_topic_name.cpp)
-
   target_link_libraries(test_valid_topic_name ${PROJECT_NAME})
-
   ament_target_dependencies(test_valid_topic_name rclcpp tl_expected)
 endif()
 
-ament_package()
+# Install the extras file from the SOURCE tree
+install(FILES cmake/${PROJECT_NAME}-extras.cmake
+        DESTINATION share/${PROJECT_NAME}/cmake)
+
+ament_package(CONFIG_EXTRAS "cmake/${PROJECT_NAME}-extras.cmake")
