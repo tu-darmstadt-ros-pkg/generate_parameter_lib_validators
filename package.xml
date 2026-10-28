@@ -4,7 +4,7 @@
   <version>0.0.1</version>
   <description>Header-only collection of practical validators for generate_parameter_library.</description>
   <maintainer email="aljoscha97@web.de">Aljoscha Schmidt</maintainer>
-  <license>BSD-3-Clause</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
