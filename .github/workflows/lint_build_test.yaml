@@ -2,10 +2,10 @@ name: Lint, Build & Test
 on:
   push:
     branches:
-      - main
+      - lyrical
   pull_request:
     branches:
-      - main
+      - lyrical
 defaults:
   run:
     shell: bash
