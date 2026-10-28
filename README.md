@@ -85,3 +85,8 @@ Validates ROS 2 topic names according to DDS-compatible rules.
 
 * Returns a descriptive error via `tl::expected`
 * For string arrays, reports the failing index
+
+### `valid_relative_topic_name`
+
+Same rules and supported types as `valid_topic_name`, but additionally rejects absolute (`/foo`) and private (`~`, `~/foo`) names.
+Use it for names that get appended to another namespace (e.g. `"~/" + name`).

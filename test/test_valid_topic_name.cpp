@@ -135,3 +135,39 @@ TEST( ValidTopicName, WorksForStringArrayAndFailsOnAnyInvalidEntry )
     EXPECT_FALSE( ok( rclcpp::Parameter( "t", v ) ) );
   }
 }
+
+static bool ok_relative( const rclcpp::Parameter &p )
+{
+  return static_cast<bool>( gplv::valid_relative_topic_name( p ) );
+}
+
+TEST( ValidRelativeTopicName, AcceptsRelativeNames )
+{
+  EXPECT_TRUE( ok_relative( rclcpp::Parameter( "t", std::string( "foo" ) ) ) );
+  EXPECT_TRUE( ok_relative( rclcpp::Parameter( "t", std::string( "foo/bar" ) ) ) );
+  EXPECT_TRUE( ok_relative( rclcpp::Parameter( "t", std::string( "_foo/_bar_1" ) ) ) );
+}
+
+TEST( ValidRelativeTopicName, RejectsAbsoluteAndPrivateNames )
+{
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "/foo" ) ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "~" ) ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "~/foo" ) ) ) );
+}
+
+TEST( ValidRelativeTopicName, StillAppliesTopicNameRules )
+{
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "" ) ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "1foo" ) ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "foo//bar" ) ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::string( "foo/" ) ) ) );
+}
+
+TEST( ValidRelativeTopicName, WorksForStringArrayAndRejectsWrongType )
+{
+  EXPECT_TRUE( ok_relative( rclcpp::Parameter( "t", std::vector<std::string>{ "a", "b/c" } ) ) );
+  EXPECT_FALSE( ok_relative( rclcpp::Parameter( "t", std::vector<std::string>{ "a", "/b" } ) ) );
+  auto res = gplv::valid_relative_topic_name( rclcpp::Parameter( "t", 1 ) );
+  ASSERT_FALSE( res );
+  EXPECT_NE( res.error().find( "valid_relative_topic_name" ), std::string::npos );
+}

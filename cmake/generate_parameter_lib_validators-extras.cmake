@@ -5,7 +5,7 @@ get_filename_component(_gplv_prefix "${CMAKE_CURRENT_LIST_DIR}/../../.."
                        ABSOLUTE)
 
 set(generate_parameter_lib_validators_VALIDATOR_HEADER
-    "${_gplv_prefix}/include/generate_parameter_lib_validators/parameter_validators.hpp"
+    "${_gplv_prefix}/include/generate_parameter_lib_validators/generate_parameter_lib_validators.hpp"
 )
 
 function(generate_parameter_library_with_validators out_target yaml_file)

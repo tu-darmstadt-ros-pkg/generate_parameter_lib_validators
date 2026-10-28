@@ -3,14 +3,13 @@
   <name>generate_parameter_lib_validators</name>
   <version>0.0.1</version>
   <description>Header-only collection of practical validators for generate_parameter_library.</description>
-
   <maintainer email="aljoscha97@web.de">Aljoscha Schmidt</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>libexpected-dev</depend>
   <depend>rclcpp</depend>
-  <depend>tl_expected</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
 
